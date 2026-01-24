@@ -24,7 +24,8 @@ class AuthService
 
         if ($user->role_id == 2) {
             Artist::create([
-                'user_id' => $user->id
+                'user_id' => $user->id,
+                'is_validated' => true
             ]);
         }
 
