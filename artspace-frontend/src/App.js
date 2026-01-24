@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import Museum3D from './pages/3D/Museum3D';
 import Register from './pages/Register';
@@ -26,9 +26,8 @@ import AllEvents from './pages/AllEvents';
 import TicketReservation from './pages/TicketReservation';
 import ArtistPortfolioEditor from './pages/ArtistPortfolioEditor';
 import EditPortfolio from './pages/EditPortfolio';
-import CheckoutSuccess from './pages/PaymentSuccess';
-import UserReservationsPage from './pages/UserReservationsPage';
 import PaymentSuccess from './pages/PaymentSuccess';
+import UserReservationsPage from './pages/UserReservationsPage';
 
 function App() {
   return (
