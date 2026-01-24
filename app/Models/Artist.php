@@ -13,6 +13,8 @@ class Artist extends User
         'website',
         'instagram',
         'twitter',
+        'is_validated',
+        'timeline'
     ];
 
     public function user()
