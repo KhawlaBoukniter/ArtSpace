@@ -48,7 +48,7 @@ export default function AllEvents() {
                             <Card key={event.id} className="overflow-hidden rounded-xl shadow-md">
                                 <div
                                     className="h-56 bg-cover bg-center"
-                                    style={{ backgroundImage: `url(${event.poster})` }}
+                                    style={{ backgroundImage: `url(${event.poster?.startsWith('http') ? event.poster : `http://localhost:8000${event.poster}`})`, }}
                                 />
                                 <CardContent className="p-4">
                                     <h3 className="text-xl font-playfair text-gray-800 mb-1">{event.title}</h3>

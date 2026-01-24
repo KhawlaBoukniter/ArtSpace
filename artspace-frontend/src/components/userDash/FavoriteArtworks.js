@@ -54,7 +54,7 @@ export default function FavoriteArtworks({ user }) {
                                 key={artwork.id}
                                 className="relative h-64 rounded-lg overflow-hidden group"
                                 style={{
-                                    backgroundImage: `url(${artwork.image})`,
+                                    backgroundImage: `url(${artwork.image?.startsWith('http') ? artwork.image : `http://localhost:8000${artwork.image}`})`,
                                     backgroundSize: "cover",
                                     backgroundPosition: "center",
                                 }}
