@@ -62,7 +62,7 @@ export default function Portfolio() {
 
             <main className="flex-1 w-full">
                 <HeroSection data={{
-                    name: portfolio.artist?.name || "Artiste inconnu",
+                    name: portfolio.user?.name || "Artiste inconnu",
                     email: portfolio.user?.email || "Email non défini",
                     avatar: portfolio.artist?.avatar || null,
                     isOwner: isOwner,
