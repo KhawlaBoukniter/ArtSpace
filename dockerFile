@@ -1,35 +1,24 @@
 FROM php:8.2-apache
 
-# Extensions nécessaires (Postgres + zip + gd)
 RUN apt-get update && apt-get install -y \
-    git unzip libpq-dev libzip-dev libpng-dev \
-    && docker-php-ext-install pdo_pgsql zip gd \
+    git unzip libpq-dev libzip-dev libpng-dev libonig-dev \
+    && docker-php-ext-install pdo_pgsql zip gd mbstring \
     && a2enmod rewrite \
     && rm -rf /var/lib/apt/lists/*
 
-# Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-# App dans /workspace (comme tes logs)
-WORKDIR /workspace
+WORKDIR /var/www/html
 COPY . .
 
-# Dépendances PHP
+# Installer les dépendances PHP (crée vendor/)
 RUN composer install --no-dev --optimize-autoloader
 
-# Apache: servir /workspace/public
-RUN sed -i 's#/var/www/html#/workspace/public#g' /etc/apache2/sites-available/000-default.conf \
-    && sed -i 's#<Directory /var/www/>#<Directory /workspace/public/>#g' /etc/apache2/apache2.conf \
-    && sed -i 's#</Directory>#AllowOverride All\n</Directory>#' /etc/apache2/apache2.conf
+# Apache -> servir /public
+ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
+RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf \
+    && sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
 
 # Permissions Laravel
 RUN chown -R www-data:www-data storage bootstrap/cache \
     && chmod -R 775 storage bootstrap/cache
-
-# Port Koyeb (Apache écoute 80 par défaut)
-# On laisse Apache gérer, Koyeb mappe le port externe
-EXPOSE 8000
-
-RUN php artisan config:clear || true \
-    && php artisan route:clear || true \
-    && php artisan view:clear || true
