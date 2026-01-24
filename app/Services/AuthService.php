@@ -20,6 +20,7 @@ class AuthService
     public function register(array $data)
     {
         $data['password'] = Hash::make($data['password']);
+        $data['email_verified_at'] = now(); // Auto-verify all new accounts
         $user = $this->userRepo->create($data);
 
         if ($user->role_id == 2) {
