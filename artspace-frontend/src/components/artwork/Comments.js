@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "../ui/card";
-import { Avatar, AvatarImage } from "../ui/avatar";
 import { TrashIcon } from "lucide-react";
 import Toast from "../ui/toast";
 import api from "../../api";
@@ -11,6 +10,7 @@ export default function Comments({ artworkId }) {
 
     const userId = JSON.parse(localStorage.getItem("user_id"));
 
+    // eslint-disable-next-line no-unused-vars
     const imageUrl = (image) => {
         if (!image) return "/default-avatar.png";
         return `http://localhost:8000/storage/${image}`;

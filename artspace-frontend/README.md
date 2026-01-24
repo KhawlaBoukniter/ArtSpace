@@ -2,6 +2,14 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Configuration
+
+### Custom Build Configuration (CRACO)
+This project uses `@craco/craco` to override Create React App's default configuration without ejecting.
+
+**Current Overrides:**
+- `craco.config.js`: Configures Webpack `ignoreWarnings` to suppress a non-blocking "Failed to parse source map" warning from `@mediapipe/tasks-vision`.
+
 ## Available Scripts
 
 In the project directory, you can run:

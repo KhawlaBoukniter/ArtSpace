@@ -48,12 +48,21 @@ export default function Login() {
             }, 2000);
 
         } catch (error) {
-            if (error.response && error.response.status === 403) {
-                setErrorMessage(error.response.data.message);
-            } else {
-                setErrorMessage("Erreur : " + error.message);
-            }
+            console.error("Login Error Details:", { status: error.status, data: error.data, message: error.message });
 
+            if (error.status === 403) {
+                setErrorMessage(error.data?.message || "Accès refusé. Compte non validé.");
+            } else if (error.status === 401) {
+                setErrorMessage("Email ou mot de passe incorrect.");
+            } else if (error.status === 422) {
+                // Laravel validation error structure: { message: "...", errors: { field: ["msg"] } }
+                const firstError = error.data?.errors
+                    ? Object.values(error.data.errors)[0]?.[0]
+                    : error.data?.message;
+                setErrorMessage(firstError || "Données invalides. Veuillez vérifier votre saisie.");
+            } else {
+                setErrorMessage(error.data?.message || error.message || "Une erreur est survenue lors de la connexion.");
+            }
         }
     };
 

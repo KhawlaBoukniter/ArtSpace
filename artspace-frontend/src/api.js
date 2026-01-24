@@ -8,7 +8,8 @@ const api = axios.create({
 // Request interceptor: add auth token if available
 api.interceptors.request.use((config) => {
     const token = localStorage.getItem("token");
-    if (token) {
+    // Do not attach token for login/register endpoints to avoid issues
+    if (token && !config.url?.includes("/login") && !config.url?.includes("/register")) {
         config.headers.Authorization = `Bearer ${token}`;
     }
     return config;
@@ -26,7 +27,11 @@ api.interceptors.response.use(
         };
 
         // Log friendly error for debugging
-        console.error("[API Error]", normalizedError);
+        console.error(`[API Error] ${normalizedError.message}`, {
+            status: normalizedError.status,
+            data: normalizedError.data,
+            url: error.config?.url
+        });
 
         return Promise.reject(normalizedError);
     }

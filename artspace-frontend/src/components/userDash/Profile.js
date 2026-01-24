@@ -1,5 +1,5 @@
 import React from "react";
-import { MailIcon, LogOutIcon, PenSquareIcon } from "lucide-react";
+import { MailIcon, LogOutIcon } from "lucide-react";
 import { Avatar, AvatarImage } from "../ui/avatar";
 import Button from "../ui/button";
 import { Card, CardContent } from "../ui/card";

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Card, CardHeader, CardContent, CardTitle } from "../ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../ui/table";
-import Button from "../ui/button";
 import api from "../../api";
 
 export default function PurchaseHistory({ user }) {

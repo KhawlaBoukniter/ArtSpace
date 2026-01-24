@@ -28,18 +28,18 @@ const testimonials = [
     },
 ];
 
-const cardVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: (i) => ({
-        opacity: 1,
-        y: 0,
-        transition: {
-            delay: i * 0.2,
-            duration: 0.6,
-            ease: "easeOut",
-        },
-    }),
-};
+// const cardVariants = {
+//     hidden: { opacity: 0, y: 30 },
+//     visible: (i) => ({
+//         opacity: 1,
+//         y: 0,
+//         transition: {
+//             delay: i * 0.2,
+//             duration: 0.6,
+//             ease: "easeOut",
+//         },
+//     }),
+// };
 
 const Testimonials = () => {
     return (
@@ -61,7 +61,7 @@ const Testimonials = () => {
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8 ">
                     {testimonials.map((t, i) => (
-                        <FadeIn delay={0.4 * i}>
+                        <FadeIn key={t.id} delay={0.4 * i}>
                             <div className="rounded-xl shadow-lg p-4 transform transition duration-300 hover:scale-105 hover:shadow-[0px_15px_20px_#00000030]">
                                 <div className="flex items-center space-x-4 mb-4 ">
                                     <img

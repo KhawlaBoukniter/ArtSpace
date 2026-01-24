@@ -31,25 +31,39 @@ class AuthController extends Controller
 
     public function login(LoginRequest $request)
     {
-        $data = $this->authService->login($request->validated());
+        try {
+            $data = $this->authService->login($request->validated());
 
-        if ($data === 'Non validé') {
+            if ($data === 'Non validé') {
+                return response()->json([
+                    'message' => "Votre compte artiste n'est pas encore validé par l'administration"
+                ], 403);
+            }
+
+            if (!$data) {
+                return response()->json([
+                    'message' => 'Identifiants invalides'
+                ], 401);
+            }
+
             return response()->json([
-                'message' => "Votre compte artiste n'est pas encore validé par l'administration"
-            ], 403);
-        }
-
-        if (!$data) {
+                'message' => 'Connexion réussie',
+                'user' => $data['user'],
+                'token' => $data['token']
+            ]);
+        } catch (\Exception $e) {
+            \Illuminate\Support\Facades\Log::error('Login Error', [
+                'message' => $e->getMessage(), 
+                'file' => $e->getFile(), 
+                'line' => $e->getLine()
+            ]);
+            
+            // Return generic message for security, logs have details
             return response()->json([
-                'message' => 'Identifiants invalides'
-            ], 401);
+                'message' => 'Une erreur interne est survenue lors de la connexion.',
+                // 'debug_error' => $e->getMessage() // Uncomment only for dev if absolutely needed
+            ], 500);
         }
-
-        return response()->json([
-            'message' => 'Connexion réussie',
-            'user' => $data['user'],
-            'token' => $data['token']
-        ]);
     }
 
     public function me()

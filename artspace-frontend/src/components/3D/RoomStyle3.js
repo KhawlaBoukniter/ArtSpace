@@ -24,6 +24,7 @@ export default function RoomStyle3({ position = [0, 0, 0], controlsRef, artistId
     })
 
     const texture = useLoader(TextureLoader, '/textures/8.jpg')
+    // eslint-disable-next-line no-unused-vars
     const { scene: frameModel } = useGLTF('/models/artwork_frame.glb')
     const artworkMap = {}
     artworksInRoom.forEach(entry => {

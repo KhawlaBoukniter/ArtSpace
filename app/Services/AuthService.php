@@ -42,11 +42,18 @@ class AuthService
             return null;
         }
 
+        /** @var \App\Models\User $user */
         $user = Auth::user();
 
-        if ($user->role_id == '2' && $user->artist->is_validated === false) {
-            Auth::logout();
-            return 'Non validé';
+        // Check if user is an artist and if their account is validated
+        // Use eager loading or safe access to relations
+        if ($user->role_id == 2) {
+             // Reload to ensure artist relation is loaded if needed, though usually lazy loaded
+             // Check if artist record exists first to avoid crash
+             if ($user->artist && $user->artist->is_validated === false) { // Ensure boolean comparison
+                Auth::logout();
+                return 'Non validé';
+             }
         }
 
         $token = $user->createToken('auth_token')->accessToken;
