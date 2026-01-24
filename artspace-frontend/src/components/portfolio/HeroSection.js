@@ -8,7 +8,7 @@ export default function HeroSection({ data }) {
     const imageUrl = (image) => {
         if (!image) return "/default-avatar.jpg";
         if (image.startsWith('http')) return image;
-        return `http://localhost:8000/storage/${image}`;
+        return `http://localhost:8000/storage/avatars/${image}`;
     };
 
     console.log(data);
