@@ -13,19 +13,33 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $this->call(ReservationSeeder::class);
-        $this->call(StyleSeeder::class);
-        $this->call(ArtworkUserSeeder::class);
-        $this->call(SavedArtworksSeeder::class);
-        $this->call(CommentSeeder::class);
-        $this->call(ArtworkPriceSeeder::class);
+        // Order matters: respect foreign key dependencies
         $this->call([
+            // 1. Base tables first
             RoleSeeder::class,
             UserSeeder::class,
+            
+            // 2. Artists and Styles (independent)
             ArtistSeeder::class,
-            EventSeeder::class,
+            StyleSeeder::class,
+            
+            // 3. Artworks (depends on artists and styles)
             ArtworkSeeder::class,
+            ArtworkPriceSeeder::class,
+            
+            // 4. Events (depends on artists)
+            EventSeeder::class,
+            
+            // 5. Tickets (depends on events)
             TicketSeeder::class,
+            
+            // 6. Reservations (depends on events, tickets, users)
+            ReservationSeeder::class,
+            
+            // 7. Relationships and interactions (depend on artworks/users)
+            CommentSeeder::class,
+            ArtworkUserSeeder::class,
+            SavedArtworksSeeder::class,
         ]);
     }
 }
