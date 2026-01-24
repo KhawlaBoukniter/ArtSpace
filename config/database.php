@@ -42,6 +42,15 @@ return [
             'synchronous' => null,
         ],
 
+        'sqlite_import' => [
+            'driver' => 'sqlite',
+            // 'url' => env('DB_URL'), // Removed to avoid conflict
+            'database' => env('SQLITE_DB_PATH', database_path('database.sqlite')),
+            'prefix' => '',
+            'foreign_key_constraints' => true,
+        ],
+
+
         'mysql' => [
             'driver' => 'mysql',
             'url' => env('DB_URL'),

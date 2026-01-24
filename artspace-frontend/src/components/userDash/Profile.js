@@ -16,9 +16,9 @@ export default function Profile({ user }) {
     };
 
     const imageUrl = (image) => {
-        if (!image) return "/default-avatar.png";
+        if (!image) return "/default-avatar.jpg";
         if (image.startsWith('http')) return image;
-        return `http://localhost:8000/storage/${image}`;
+        return `http://localhost:8000/storage/avatar/${image}`;
     };
 
 
