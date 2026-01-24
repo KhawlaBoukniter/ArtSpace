@@ -6,6 +6,7 @@ use App\Http\Controllers\ArtworkController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\HealthController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\ReservationController;
@@ -15,6 +16,9 @@ use App\Http\Controllers\StatsController;
 use App\Http\Controllers\TicketController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+
+// Health check endpoint
+Route::get('/health', [HealthController::class, 'index']);
 
 Route::get('/user', function (Request $request) {
     return $request->user();

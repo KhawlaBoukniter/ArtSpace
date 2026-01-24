@@ -18,17 +18,26 @@ class ReservationSeeder extends Seeder
      */
     public function run(): void
     {
-        // Get existing visitor user (role_id=3)
-        $visitor = User::where('role_id', 3)->first();
-        if (!$visitor) {
-            $this->command->warn("Aucun utilisateur avec role_id=3 (visiteur) trouvé.");
+        // Get role IDs by name for robustness
+        $visitorRoleId = \App\Models\Role::where('name', 'visitor')->first()?->id;
+        $artistRoleId = \App\Models\Role::where('name', 'artist')->first()?->id;
+
+        if (!$visitorRoleId || !$artistRoleId) {
+            $this->command->error('Required roles not found.');
             return;
         }
 
-        // Get existing artist user (role_id=2) instead of creating new one
-        $artistUser = User::where('role_id', 2)->first();
+        // Get existing visitor user
+        $visitor = User::where('role_id', $visitorRoleId)->first();
+        if (!$visitor) {
+            $this->command->warn("No visitor user found.");
+            return;
+        }
+
+        // Get existing artist user
+        $artistUser = User::where('role_id', $artistRoleId)->first();
         if (!$artistUser) {
-            $this->command->warn("Aucun utilisateur avec role_id=2 (artiste) trouvé.");
+            $this->command->warn("No artist user found.");
             return;
         }
 
