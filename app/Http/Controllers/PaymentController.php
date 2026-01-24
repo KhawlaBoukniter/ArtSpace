@@ -26,7 +26,13 @@ class PaymentController extends Controller
             return response()->json(['message' => 'Ce ticket est gratuit, aucun paiement requis.'], 400);
         }
 
-        Stripe::setApiKey(config('services.stripe.secret'));
+        $stripeSecret = config('services.stripe.secret');
+
+        if (!$stripeSecret) {
+            return response()->json(['message' => 'Erreur configuration : La clé secrète Stripe n\'est pas configurée.'], 500);
+        }
+
+        Stripe::setApiKey($stripeSecret);
 
         try {
             $session = Session::create([

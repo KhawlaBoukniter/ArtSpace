@@ -152,6 +152,12 @@ export default function TicketReservation() {
                             Préparation du paiement, veuillez patienter...
                         </p>
                     )}
+
+                    {error && (
+                        <p className="text-red-500 font-playfair mt-4 text-center">
+                            {error}
+                        </p>
+                    )}
                 </div>
             </main>
             <Footer />
