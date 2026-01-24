@@ -1,19 +1,35 @@
-FROM php:8.2-cli
+FROM php:8.2-apache
 
+# Extensions nécessaires (Postgres + zip + gd)
 RUN apt-get update && apt-get install -y \
     git unzip libpq-dev libzip-dev libpng-dev \
     && docker-php-ext-install pdo_pgsql zip gd \
+    && a2enmod rewrite \
     && rm -rf /var/lib/apt/lists/*
 
+# Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-WORKDIR /app
+# App dans /workspace (comme tes logs)
+WORKDIR /workspace
 COPY . .
 
+# Dépendances PHP
 RUN composer install --no-dev --optimize-autoloader
 
+# Apache: servir /workspace/public
+RUN sed -i 's#/var/www/html#/workspace/public#g' /etc/apache2/sites-available/000-default.conf \
+    && sed -i 's#<Directory /var/www/>#<Directory /workspace/public/>#g' /etc/apache2/apache2.conf \
+    && sed -i 's#</Directory>#AllowOverride All\n</Directory>#' /etc/apache2/apache2.conf
+
+# Permissions Laravel
 RUN chown -R www-data:www-data storage bootstrap/cache \
     && chmod -R 775 storage bootstrap/cache
 
+# Port Koyeb (Apache écoute 80 par défaut)
+# On laisse Apache gérer, Koyeb mappe le port externe
 EXPOSE 8000
-CMD ["sh", "-c", "php artisan serve --host=0.0.0.0 --port=${PORT:-8000}"]
+
+RUN php artisan config:clear || true \
+    && php artisan route:clear || true \
+    && php artisan view:clear || true
