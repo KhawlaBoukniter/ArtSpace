@@ -52,7 +52,14 @@ class ArtistController extends Controller
 
     public function showPortfolio($id)
     {
-        $artist = Artist::with(['user', 'timelines', 'artworks', 'events'])->find($id);
+        $artist = Artist::with([
+            'user',
+            'timelines' => function ($query) {
+                $query->orderBy('year', 'desc');
+            },
+            'artworks',
+            'events'
+        ])->find($id);
 
         if (!$artist) {
             return response()->json(['message' => 'Artiste introuvable'], 404);
