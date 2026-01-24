@@ -1,6 +1,6 @@
 import { useThree, useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
-import { useRef, useEffect, useState } from 'react'
+import { useRef, useEffect, useState, useCallback } from 'react'
 
 export default function ClickToMove({ floorRef, controlsRef, isActive = true }) {
     const { camera, raycaster, mouse, gl } = useThree()
@@ -8,7 +8,7 @@ export default function ClickToMove({ floorRef, controlsRef, isActive = true }) 
     const markerRef = useRef()
     const velocity = 0.2
 
-    const handleClick = (e) => {
+    const handleClick = useCallback((e) => {
         if (!isActive || !floorRef.current || !gl?.domElement) return
 
         const rect = gl.domElement.getBoundingClientRect()
@@ -28,12 +28,12 @@ export default function ClickToMove({ floorRef, controlsRef, isActive = true }) 
                 markerRef.current.position.set(point.x, 0.01, point.z)
             }
         }
-    }
+    }, [isActive, floorRef, gl, mouse, raycaster, camera])
 
     useEffect(() => {
         window.addEventListener('click', handleClick)
         return () => window.removeEventListener('click', handleClick)
-    }, [isActive])
+    }, [handleClick])
 
     useFrame(() => {
         if (target) {

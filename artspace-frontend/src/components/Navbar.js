@@ -82,8 +82,8 @@ const Navbar = () => {
 
     const dashRoute = () => {
         if (!user) return "/";
-        if (user.role_id == 1) return "/admin-dash";
-        if (user.role_id == 2) return "/artist-dash";
+        if (user.role_id === 1) return "/admin-dash";
+        if (user.role_id === 2) return "/artist-dash";
         return "/user-dash";
     };
 

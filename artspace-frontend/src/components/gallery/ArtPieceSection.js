@@ -28,7 +28,7 @@ const ArtPieceSection = ({ artworks }) => {
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {visibleArtworks.map((artwork, i) => {
                         const artistId = artwork.artist?.user?.id;
-                        const isOwner = artistId == userId;
+                        const isOwner = artistId === userId;
 
                         console.log(`--- Œuvre ID: ${artwork.id} ---`);
                         console.log("user connecté :", userId);
